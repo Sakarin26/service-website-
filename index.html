@@ -25,105 +25,141 @@
 </header>
 
 <main>
-<section class="hero">
-<div class="wrap hero-inner">
-<div class="hero-text">
-<h1>Willkommen auf unserer Test-Website</h1>
-<p>Diese Seite dient ausschließlich zu Entwicklungs- und Testzwecken. Es werden keine Dienstleistungen angeboten.</p>
-</div>
-<div class="hero-image">
-<img src="images/hero.jpg" alt="Demo Bild">
-</div>
-</div>
-</section>
+<!-- ===========================
+SERVICES DEMO SECTION
+(Einfügen in index.html innerhalb <main>)
+Demo / Testmodus: keine echten Angebote, keine Preise verbindlich.
+=========================== -->
+<section id="services-demo" class="wrap container">
+<h2>Dienstleistungs-Demo (Testansicht)</h2>
+<p class="muted">Diese Darstellung dient nur Test- und Demonstrationszwecken. Keine echten Angebote.</p>
 
-<section class="wrap features">
-<h2>Galerie &amp; Fotos (Demo)</h2>
-<p class="muted">Beispielbilder zur Darstellung des Layouts</p>
-
-<div class="gallery-controls">
-<button data-filter="all" class="filter-btn active">Alle</button>
-<button data-filter="service" class="filter-btn">Service</button>
-<button data-filter="team" class="filter-btn">Team</button>
+<!-- SERVICE 1 -->
+<article class="service-card" data-service-id="svc-1">
+<div class="service-header">
+<div class="service-title">
+<h3>Demo Dienst A</h3>
+<p class="muted small">Kurze Beschreibung (Demo).</p>
 </div>
 
-<div id="gallery" class="gallery-grid">
-<!-- Galerie-Elemente: class "service" oder "team" für Filter -->
-<figure class="gallery-item service"><img src="images/service1.jpg" alt="Service 1"><figcaption>Service 1 (Demo)</figcaption></figure>
-<figure class="gallery-item service"><img src="images/service2.jpg" alt="Service 2"><figcaption>Service 2 (Demo)</figcaption></figure>
-<figure class="gallery-item service"><img src="images/service3.jpg" alt="Service 3"><figcaption>Service 3 (Demo)</figcaption></figure>
-<figure class="gallery-item team"><img src="images/team.jpg" alt="Team"><figcaption>Team (Demo)</figcaption></figure>
-<figure class="gallery-item"><img src="images/gallery1.jpg" alt="Galerie 1"><figcaption>Galerie 1</figcaption></figure>
-<figure class="gallery-item"><img src="images/gallery2.jpg" alt="Galerie 2"><figcaption>Galerie 2</figcaption></figure>
-<figure class="gallery-item"><img src="images/gallery3.jpg" alt="Galerie 3"><figcaption>Galerie 3</figcaption></figure>
-</div>
-
-<div id="lightbox" class="lightbox" aria-hidden="true">
-<button class="lb-close" aria-label="Schließen">✕</button>
-<img class="lb-img" alt="">
-<div class="lb-caption"></div>
-</div>
-</section>
-
-<section class="wrap services">
-<h2>Beispieltabelle (nur Demo)</h2>
-<p class="muted">Diese Tabelle zeigt, wie Informationen strukturiert dargestellt werden können.</p>
-
-<div class="table-wrap">
-<table>
-<thead>
-<tr><th>ID</th><th>Bezeichnung</th><th>Kategorie</th><th>Status</th></tr>
-</thead>
-<tbody>
-<tr><td>1</td><td>Test-Service A</td><td>Service</td><td>Demo</td></tr>
-<tr><td>2</td><td>Test-Service B</td><td>Service</td><td>Demo</td></tr>
-<tr><td>3</td><td>Interner Test</td><td>Team</td><td>Demo</td></tr>
-</tbody>
-</table>
-</div>
-</section>
-
-<section class="wrap options">
-<h2>Optionen (Demo)</h2>
-<p class="muted">Einige interaktive Optionen — nur visuell, nichts wird gespeichert.</p>
-
-<div class="option-grid">
-<label class="option">
-<span>Sprache</span>
-<select id="langSelect">
-<option value="de">Deutsch</option>
-<option value="en">English</option>
-</select>
+<div class="service-actions">
+<label class="time-choice">
+<input type="radio" name="time-svc-1" value="now" checked> Jetzt
+</label>
+<label class="time-choice">
+<input type="radio" name="time-svc-1" value="soon"> Sobald wie möglich
+</label>
+<label class="time-choice">
+<input type="radio" name="time-svc-1" value="week"> Diese Woche
+</label>
+<label class="time-choice">
+<input type="radio" name="time-svc-1" value="month"> Diesen Monat
 </label>
 
-<label class="option">
-<span>Ansicht</span>
-<select id="viewSelect">
-<option value="card">Karten</option>
-<option value="list">Liste</option>
-</select>
+<button class="btn view-plans" data-svc="svc-1" aria-expanded="false">Pakete anzeigen</button>
+</div>
+</div>
+
+<!-- Panels mit Preisen (initial versteckt) -->
+<div class="plans-panel" id="plans-svc-1" aria-hidden="true">
+<p class="muted">Hinweis: nur Demo-Preise, nicht buchbar.</p>
+<div class="plans-grid">
+<!-- Paket-Karte (Preis wird durch JS aktualisiert) -->
+<div class="plan-card" data-plan="basic">
+<h4>Basic (Demo)</h4>
+<div class="price" data-price-base="10">Preis: <span class="price-value">10 €</span></div>
+<p class="muted">Einfache Demo-Leistung</p>
+<div class="plan-actions">
+<button class="btn btn-secondary demo-select" data-plan="basic">Wählen (Demo)</button>
+</div>
+</div>
+
+<div class="plan-card" data-plan="standard">
+<h4>Standard (Demo)</h4>
+<div class="price" data-price-base="25">Preis: <span class="price-value">25 €</span></div>
+<p class="muted">Erweiterte Demo-Leistung</p>
+<div class="plan-actions">
+<button class="btn btn-secondary demo-select" data-plan="standard">Wählen (Demo)</button>
+</div>
+</div>
+
+<div class="plan-card" data-plan="premium">
+<h4>Premium (Demo)</h4>
+<div class="price" data-price-base="45">Preis: <span class="price-value">45 €</span></div>
+<p class="muted">Umfassende Demo-Leistung</p>
+<div class="plan-actions">
+<button class="btn btn-secondary demo-select" data-plan="premium">Wählen (Demo)</button>
+</div>
+</div>
+</div>
+</div>
+</article>
+
+<!-- SERVICE 2 -->
+<article class="service-card" data-service-id="svc-2">
+<div class="service-header">
+<div class="service-title">
+<h3>Demo Dienst B</h3>
+<p class="muted small">Kurze Beschreibung (Demo).</p>
+</div>
+
+<div class="service-actions">
+<label class="time-choice">
+<input type="radio" name="time-svc-2" value="now" checked> Jetzt
+</label>
+<label class="time-choice">
+<input type="radio" name="time-svc-2" value="soon"> Sobald wie möglich
+</label>
+<label class="time-choice">
+<input type="radio" name="time-svc-2" value="week"> Diese Woche
+</label>
+<label class="time-choice">
+<input type="radio" name="time-svc-2" value="month"> Diesen Monat
 </label>
 
-<label class="option">
-<span>Demo-Aktion</span>
-<button id="demoAction" class="btn">Aktion (Demo)</button>
-</label>
+<button class="btn view-plans" data-svc="svc-2" aria-expanded="false">Pakete anzeigen</button>
 </div>
-</section>
-
-<section class="wrap contact-demo">
-<h2>Kontaktformular (Demo)</h2>
-<p class="muted">Dieses Formular ist eine Demo und sendet keine Daten. Nach Genehmigung wird es aktiviert.</p>
-
-<form id="demoForm" onsubmit="return false;">
-<label>Vorname<br><input type="text" name="firstname" placeholder="Max"></label>
-<label>E-Mail<br><input type="email" name="email" placeholder="name@example.com"></label>
-<label>Nachricht<br><textarea name="message" placeholder="Ihre Nachricht (Demo)"></textarea></label>
-<div class="form-actions">
-<button type="button" id="formSubmit" class="btn">Formular senden (Demo)</button>
 </div>
-</form>
+
+<div class="plans-panel" id="plans-svc-2" aria-hidden="true">
+<p class="muted">Hinweis: nur Demo-Preise, nicht buchbar.</p>
+<div class="plans-grid">
+<div class="plan-card" data-plan="basic">
+<h4>Basic (Demo)</h4>
+<div class="price" data-price-base="15">Preis: <span class="price-value">15 €</span></div>
+<p class="muted">Einfache Demo-Leistung</p>
+<div class="plan-actions">
+<button class="btn btn-secondary demo-select" data-plan="basic">Wählen (Demo)</button>
+</div>
+</div>
+
+<div class="plan-card" data-plan="standard">
+<h4>Standard (Demo)</h4>
+<div class="price" data-price-base="35">Preis: <span class="price-value">35 €</span></div>
+<p class="muted">Erweiterte Demo-Leistung</p>
+<div class="plan-actions">
+<button class="btn btn-secondary demo-select" data-plan="standard">Wählen (Demo)</button>
+</div>
+</div>
+
+<div class="plan-card" data-plan="premium">
+<h4>Premium (Demo)</h4>
+<div class="price" data-price-base="60">Preis: <span class="price-value">60 €</span></div>
+<p class="muted">Umfassende Demo-Leistung</p>
+<div class="plan-actions">
+<button class="btn btn-secondary demo-select" data-plan="premium">Wählen (Demo)</button>
+</div>
+</div>
+</div>
+</div>
+</article>
+
+<p class="muted small">Alle dargestellten Preise sind fiktiv und dienen nur zu Demonstrationszwecken.</p>
 </section>
+<!-- ===========================
+END SERVICES DEMO SECTION
+=========================== -->
+
 </main>
 
 <footer class="site-footer">
