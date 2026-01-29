@@ -1,13 +1,60 @@
+/* ===== BASIC THEME (Clean / Apple-like) ===== */
+
 body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+background-color: #f5f5f7;
+color: #1d1d1f;
+margin: 0;
+padding: 0;
+}
+
+/* Container */
+.container {
+max-width: 900px;
+margin: 60px auto;
+padding: 30px;
+background-color: white;
+border-radius: 14px;
+box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* Headings */
+h1 {
+font-size: 36px;
+font-weight: 600;
+margin-bottom: 20px;
+}
+
+h2 {
+font-size: 26px;
+margin-top: 40px;
+}
+
+/* Text */
+p {
+font-size: 16px;
+line-height: 1.7;
+}
+
+/* Images */
+img {
+max-width: 100%;
+border-radius: 12px;
+margin: 25px 0;
+}
+
+/* Navigation */
+nav {
+margin-bottom: 30px;
 }
 
 nav a {
 text-decoration: none;
-margin-right: 10px;
+margin-right: 15px;
+font-weight: 500;
 color: #0066cc;
 }
 
 nav a:hover {
-color: #ff6600;
+text-decoration: underline;
 }
