@@ -61,3 +61,17 @@ color: #0066cc;
 nav a:hover {
 text-decoration: underline;
 }
+@media (prefers-color-scheme: dark) {
+body {
+background-color: #1c1c1e;
+color: #f2f2f7;
+}
+
+.container {
+background-color: #2c2c2e;
+}
+
+nav a {
+color: #0a84ff;
+}
+}
