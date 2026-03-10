@@ -1,24 +1,212 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<title>Über mich</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Kontakt (Demo) — Test-Website</title>
+  <meta name="description" content="Kontaktformular (Demo). Es werden keine Daten versendet — nur Demo.">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav>
-<a href="index.html">Start</a> |
-<a href="about.html">Über</a> |
-<a href="contact.html">Kontakt</a>
-</nav>
-<hr>
-<h1>Unsere Philosophie</h1>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <div class="brand">
+        <img src="images/logo.png" alt="Logo" class="logo">
+        <span class="brand-name">Test-Website (Demo)</span>
+      </div>
 
-<p>
-Im Mittelpunkt stehen klare Kommunikation,
-verlässliche Abläufe und maßgeschneiderte Lösungen
-für individuelle Anforderungen.
-</p>
+      <nav class="main-nav">
+        <a href="index.html">Start</a>
+        <a href="about.html">Über</a>
+        <a href="contact.html">Kontakt</a>
+        <button id="themeToggle" class="btn-link" aria-pressed="false">Dark</button>
+      </nav>
+    </div>
 
+    <!-- Demo Hinweis -->
+    <div class="demo-banner" role="note" aria-live="polite">
+      ⚠ Demo: Dieses Formular ist nur zu Präsentationszwecken. Es werden keine Daten versendet.
+    </div>
+  </header>
+
+  <main>
+    <section class="container contact-section" aria-labelledby="contact-heading">
+      <div class="wrap">
+        <h1 id="contact-heading">Kontaktformular (Demo)</h1>
+        <p class="muted">Fülle das Formular aus — die Nachricht wird nur lokal simuliert und nicht an Dritte gesendet.</p>
+
+        <!-- Form Card -->
+        <div class="service-card" style="margin-top:18px; padding:20px;">
+          <!-- Form selbst -->
+          <form id="contact-form" class="contact-form" novalidate>
+            <div class="form-grid" style="margin-top:0;">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Ihr Name" required>
+
+              <label for="email">E-Mail</label>
+              <input id="email" name="email" type="email" placeholder="name@beispiel.de" required>
+
+              <label for="message">Nachricht</label>
+              <textarea id="message" name="message" rows="6" placeholder="Ihre Nachricht..." required></textarea>
+            </div>
+
+            <div class="form-actions" style="margin-top:12px;">
+              <button type="submit" id="send-btn" class="btn primary">Senden (Demo)</button>
+              <button type="button" id="reset-btn" class="btn outline">Zurücksetzen</button>
+            </div>
+
+            <div id="form-feedback" class="form-feedback" role="status" aria-live="polite" style="margin-top:12px;"></div>
+          </form>
+        </div>
+
+        <!-- Erfolgspanel (initial versteckt) -->
+        <div id="success-panel" class="plan-card hidden" style="margin-top:18px; padding:18px; border-radius:12px;">
+          <h3 id="success-title">Nachricht gesendet (Demo)</h3>
+          <p id="success-text" class="muted">Wir haben Ihre Anfrage erhalten. Wir kontaktieren Sie so schnell wie möglich (Demo). Bitte haben Sie etwas Geduld.</p>
+
+          <div style="margin-top:12px;">
+            <strong>Ihre Nachricht (Vorschau):</strong>
+            <div id="sent-message" style="margin-top:8px; padding:12px; border-radius:10px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));">
+              <!-- hier erscheint die eingegebene Nachricht -->
+            </div>
+          </div>
+
+          <div style="margin-top:14px;">
+            <button id="success-close" class="btn outline">Zurück zum Formular</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p class="muted">Demo-Website — Test &amp; Entwicklung. Kein Angebot.</p>
+      <p class="muted small">Impressum / Datenschutz: Platzhalter</p>
+    </div>
+  </footer>
+
+  <!-- Inline-Skript: Form-Logik (Demo). Kein Versand, alles lokal -->
+  <script>
+    (function () {
+      const form = document.getElementById('contact-form');
+      const sendBtn = document.getElementById('send-btn');
+      const resetBtn = document.getElementById('reset-btn');
+      const feedback = document.getElementById('form-feedback');
+      const successPanel = document.getElementById('success-panel');
+      const sentMessage = document.getElementById('sent-message');
+      const successClose = document.getElementById('success-close');
+
+      // Helper: safe text (einfaches Escaping)
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // Reset behavior
+      resetBtn.addEventListener('click', () => {
+        form.reset();
+        feedback.textContent = '';
+        // Falls success panel sichtbar ist, zurück zum Formular
+        if (!successPanel.classList.contains('hidden')) {
+          successPanel.classList.add('hidden');
+        }
+      });
+
+      // Submit (Demo)
+      form.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+
+        const name = form.querySelector('#name').value.trim();
+        const email = form.querySelector('#email').value.trim();
+        const message = form.querySelector('#message').value.trim();
+
+        // einfache Validierung
+        if (!name || !email || !message) {
+          feedback.textContent = 'Bitte füllen Sie alle Felder aus (Demo).';
+          feedback.style.color = '#d97706'; // orange
+          return;
+        }
+
+        // Zeige das "gesendet"-Panel mit schöner Nachricht (Demo)
+        const confirmationText = 'Wir haben Ihre Anfrage erhalten. Wir kontaktieren Sie so schnell wie möglich (Demo). Bitte haben Sie etwas Geduld.';
+        document.getElementById('success-text').textContent = confirmationText;
+
+        // Fülle die Nachrichtenvorschau (escaped)
+        sentMessage.innerHTML = '<strong>' + escapeHtml(name) + ' • ' + escapeHtml(email) + '</strong><br><br>' +
+                                '<div style="white-space:pre-wrap;">' + escapeHtml(message) + '</div>';
+
+        // Animation: form ausblenden, success einblenden
+        form.style.display = 'none';
+        successPanel.classList.remove('hidden');
+        successPanel.setAttribute('aria-hidden', 'false');
+
+        // Feedback leer machen
+        feedback.textContent = '';
+
+        // kleine visuelle Rückmeldung (Toast-ähnlich)
+        showMiniToast('Danke — Ihre Nachricht wurde (Demo) empfangen.');
+      });
+
+      // "Zurück zum Formular" im Erfolgs-Panel
+      if (successClose) {
+        successClose.addEventListener('click', () => {
+          // Formular wieder sichtbar machen und zurücksetzen
+          successPanel.classList.add('hidden');
+          form.reset();
+          form.style.display = '';
+          form.querySelector('#name').focus();
+        });
+      }
+
+      // kleine Toast-Funktion (lokal, temporär)
+      function showMiniToast(text) {
+        let container = document.getElementById('demo-toast-container');
+        if (!container) {
+          container = document.createElement('div');
+          container.id = 'demo-toast-container';
+          container.style.position = 'fixed';
+          container.style.right = '20px';
+          container.style.bottom = '20px';
+          container.style.zIndex = '9999';
+          document.body.appendChild(container);
+        }
+        const toast = document.createElement('div');
+        toast.textContent = text;
+        toast.style.background = 'linear-gradient(90deg, rgba(111,66,193,0.95), rgba(124,92,255,0.85))';
+        toast.style.color = '#fff';
+        toast.style.padding = '12px 16px';
+        toast.style.borderRadius = '10px';
+        toast.style.boxShadow = '0 8px 30px rgba(11,6,40,0.6)';
+        toast.style.marginTop = '10px';
+        toast.style.fontWeight = '800';
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        toast.style.transition = 'all 0.28s ease';
+        container.appendChild(toast);
+        requestAnimationFrame(() => { toast.style.opacity = '1'; toast.style.transform = 'translateY(0)'; });
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(8px)';
+          setTimeout(() => toast.remove(), 320);
+        }, 3000);
+      }
+
+      // Accessibility: Enter in textarea with Ctrl+Enter => submit
+      const textarea = form.querySelector('#message');
+      textarea && textarea.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) {
+          ev.preventDefault();
+          sendBtn.click();
+        }
+      });
+
+    })();
+  </script>
 
 </body>
 </html>
