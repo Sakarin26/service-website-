@@ -328,3 +328,154 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
 });
+/* ===== Mobile-friendly Meme Generator (füge ans Ende von script.js) ===== */
+document.addEventListener('DOMContentLoaded', function () {
+
+  // sichere Meme-Liste
+  const MEMES = [
+    { title: '67 — Die Glückszahl', body: 'Ein sehr zufälliges Meme: 67 🎉\nImmer ein Grund zu lächeln.' , sticker: '🔢' },
+    { title: 'Skibidi', body: 'Skibidi-Vibes! Tanz in Gedanken 😄', sticker: '🕺' },
+    { title: 'Dancing Cat', body: 'Die tanzende Katze sagt Hallo! 🐱💃', sticker: '🐱' },
+    { title: 'Surprised', body: 'Wenn du gerade eine unerwartete Idee hattest… 😯', sticker: '😯' },
+    { title: 'Boop', body: 'Boop the snoot — niedlich und harmlos. 🫧', sticker: '🫧' },
+    { title: 'Banana', body: 'Bananen sind glücklich. 🍌', sticker: '🍌' },
+    { title: 'Tiny Dog', body: 'Kleiner Hund, große Persönlichkeit. 🐶', sticker: '🐶' },
+    { title: 'Noice', body: 'Wenn alles stimmt — Noice. 👍', sticker: '👌' },
+    { title: 'Hello', body: 'Hallo! Freundliches Demo-Meme. 😊', sticker: '👋' },
+    { title: 'Friendly Bot', body: 'Ich bin ein netter Bot. Beep boop 🤖', sticker: '🤖' }
+  ];
+
+  // Elemente
+  const btn = document.getElementById('meme-gen-btn');
+  const input = document.getElementById('meme-number');
+  const egg = document.getElementById('meme-egg');
+  const eggArea = document.getElementById('egg-area');
+  const result = document.getElementById('meme-result');
+
+  // prüfe Existenz (debug)
+  if (!btn || !input || !egg || !eggArea || !result) {
+    console.warn('MemeGenerator: fehlende Elemente', { btn: !!btn, input: !!input, egg: !!egg, eggArea: !!eggArea, result: !!result });
+    return;
+  }
+
+  // Debounce / Doppel-Event Verhinderung
+  let lastTrigger = 0;
+  const TRIGGER_GAP = 800; // ms
+
+  function canTrigger() {
+    const now = Date.now();
+    if (now - lastTrigger < TRIGGER_GAP) return false;
+    lastTrigger = now;
+    return true;
+  }
+
+  // Fragment-Explosion
+  function createFragments(cx, cy, count = 12) {
+    const rect = eggArea.getBoundingClientRect();
+    const frags = [];
+    for (let i = 0; i < count; i++) {
+      const f = document.createElement('div');
+      f.className = 'fragment';
+      const ang = Math.random() * Math.PI * 2;
+      const dist = 40 + Math.random() * 80;
+      const tx = Math.round(Math.cos(ang) * dist) + 'px';
+      const ty = Math.round(Math.sin(ang) * dist) + 'px';
+      const rot = (Math.random() * 360).toFixed(0) + 'deg';
+      f.style.setProperty('--tx', tx);
+      f.style.setProperty('--ty', ty);
+      f.style.setProperty('--rot', rot);
+      const x = cx - rect.left - 8;
+      const y = cy - rect.top - 8;
+      f.style.left = x + 'px';
+      f.style.top = y + 'px';
+      eggArea.appendChild(f);
+      frags.push(f);
+    }
+    setTimeout(() => frags.forEach(x => x.remove()), 1400);
+  }
+
+  // Meme anzeigen
+  function showMeme(obj) {
+    result.innerHTML = '';
+    const card = document.createElement('div');
+    card.className = 'meme-card';
+    const title = document.createElement('div');
+    title.className = 'meme-title';
+    title.textContent = (obj.sticker ? obj.sticker + ' ' : '') + obj.title;
+    const body = document.createElement('div');
+    body.className = 'meme-body';
+    body.textContent = obj.body;
+    card.appendChild(title);
+    card.appendChild(body);
+    result.appendChild(card);
+  }
+
+  // Hauptfunktion
+  function generateAction(triggerEvent) {
+    if (!canTrigger()) return;
+    // mobile: prevent multiple event types stacking
+    if (triggerEvent && triggerEvent.type === 'touchstart') {
+      triggerEvent.preventDefault();
+    }
+
+    btn.disabled = true;
+    btn.classList.add('pressed');
+
+    let num = parseInt(input.value, 10);
+    if (Number.isNaN(num)) num = Math.floor(Math.random() * 101);
+
+    // Egg bounce
+    egg.classList.remove('exploded');
+    void egg.offsetWidth; // reflow
+    egg.classList.add('bounce');
+
+    // Explosion nach kurzer Verzögerung
+    setTimeout(() => {
+      const r = egg.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+
+      createFragments(cx, cy, 14);
+      egg.classList.add('exploded');
+
+      // Meme wählen (deterministisch via Zahl)
+      const idx = Math.abs(num) % MEMES.length;
+      const chosen = MEMES[idx];
+
+      setTimeout(() => {
+        showMeme(chosen);
+        btn.disabled = false;
+        btn.classList.remove('pressed');
+      }, 420);
+
+      setTimeout(() => egg.classList.remove('bounce'), 900);
+    }, 560);
+  }
+
+  // Event Listener: pointerdown (vereint mouse & touch), click fallback, touchstart for older browsers
+  // pointerdown wird bevorzugt — falls nicht unterstützt, greift click/touchstart.
+  const supportsPointer = window.PointerEvent !== undefined;
+
+  if (supportsPointer) {
+    btn.addEventListener('pointerdown', function (ev) {
+      // pointerdown feuert auch bei Maus; wir dürfen nicht verhindern, nur entkoppeln
+      generateAction(ev);
+    }, { passive: false });
+  } else {
+    // fallback
+    btn.addEventListener('touchstart', function (ev) { generateAction(ev); }, { passive: false });
+    btn.addEventListener('click', function (ev) { generateAction(ev); }, { passive: true });
+  }
+
+  // zusätzlich click als extra-fallback (verhindert doppelauslösung durch lastTrigger)
+  btn.addEventListener('click', function (ev) { generateAction(ev); }, { passive: true });
+
+  // Enter auf Input löst auch aus
+  input.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Enter') {
+      ev.preventDefault();
+      generateAction(ev);
+    }
+  });
+
+});
