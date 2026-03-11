@@ -201,15 +201,16 @@ body{
   .plans-grid{ justify-content:center; }
   .service-header{ flex-direction:column; align-items:flex-start; gap:12px; }
 }
-/* ===== Random Meme Generator (Demo) — Purple themed ===== */
+/* ===== Meme Generator Styles (füge ans Ende) ===== */
 .meme-generator { margin-top:18px; padding:16px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005)); box-shadow: 0 12px 36px rgba(11,6,40,0.12); }
 .meme-controls { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:8px; }
-.meme-controls input[type="number"] {
-  width:120px; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:inherit; font-weight:700;
-}
+.meme-controls input[type="number"] { width:120px; padding:8px 10px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:inherit; font-weight:700; }
+
+/* area muss relative sein, damit Fragmente absolut positioniert werden können */
 #egg-area { height:120px; display:flex; align-items:center; justify-content:center; margin-top:12px; position:relative; overflow:visible; }
-.egg { width:86px; height:110px; border-radius:50% 50% 45% 45%; background: radial-gradient(circle at 30% 30%, #fff 6%, rgba(255,255,255,0.06) 7%, rgba(111,66,193,0.95) 30%, rgba(111,66,193,0.80) 100%); box-shadow: 0 12px 28px rgba(111,66,193,0.18); transform-origin:center bottom; transition:transform 260ms ease; }
+
+/* Ei */
+.egg { width:86px; height:110px; border-radius:50% 50% 45% 45%; background: radial-gradient(circle at 30% 30%, #fff 6%, rgba(255,255,255,0.06) 7%, rgba(111,66,193,0.95) 30%, rgba(111,66,193,0.80) 100%); box-shadow: 0 12px 28px rgba(111,66,193,0.18); transform-origin:center bottom; transition:transform 260ms ease; display:block; }
 
 /* Egg bounce */
 .egg.bounce { animation: eggBounce 760ms cubic-bezier(.2,.9,.3,1); }
@@ -220,11 +221,11 @@ body{
   100% { transform: translateY(0) scale(1); }
 }
 
-/* explosion fragments (created dynamically) */
+/* explosion fragments (dynamisch erzeugt) */
 .fragment {
   position:absolute;
   width:12px; height:12px; border-radius:3px;
-  background: linear-gradient(90deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6));
+  background: linear-gradient(90deg, rgba(255,255,255,0.95), rgba(255,255,255,0.75));
   box-shadow: 0 6px 14px rgba(0,0,0,0.25);
   opacity:0; transform: translate(0,0) scale(0.6);
   animation: fragmentFly 900ms cubic-bezier(.2,.9,.3,1) forwards;
@@ -235,27 +236,17 @@ body{
   100% { opacity:0; transform: translate(var(--tx), var(--ty)) scale(0.6) rotate(var(--rot)); }
 }
 
-/* meme result card */
+/* meme card */
 .meme-result { margin-top:14px; min-height:80px; display:flex; align-items:flex-start; gap:12px; flex-direction:column; }
-.meme-card {
-  width:100%; max-width:640px;
-  padding:14px; border-radius:12px;
-  background: linear-gradient(90deg, rgba(111,66,193,0.12), rgba(124,92,255,0.06));
-  box-shadow: 0 18px 46px rgba(11,6,40,0.12);
-  color:var(--text-light);
-  animation: cardIn 360ms cubic-bezier(.2,.9,.3,1);
-}
+.meme-card { width:100%; max-width:640px; padding:14px; border-radius:12px; background: linear-gradient(90deg, rgba(111,66,193,0.12), rgba(124,92,255,0.06)); box-shadow: 0 18px 46px rgba(11,6,40,0.12); color:inherit; animation: cardIn 360ms cubic-bezier(.2,.9,.3,1); }
 @keyframes cardIn { from { opacity:0; transform: translateY(8px) scale(0.99); } to { opacity:1; transform:none; } }
 .meme-title { font-weight:900; font-size:18px; margin:0 0 6px 0; }
-.meme-body { font-size:15px; color: rgba(255,255,255,0.92); white-space:pre-wrap; }
+.meme-body { font-size:15px; color: rgba(255,255,255,0.95); white-space:pre-wrap; }
 
-/* cute sticker (emoji) */
-.meme-sticker { font-size:44px; margin-right:10px; }
-
-/* small helper for egg "explode" soundless visual */
+/* egg hidden after explosion */
 .egg.exploded { opacity:0; transform: scale(0.4); transition: all 320ms ease; }
 
-/* responsive tweaks */
+/* responsive */
 @media (max-width:900px){
   .meme-controls { flex-direction:column; align-items:flex-start; }
   .meme-controls input { width:100%; max-width:240px; }
