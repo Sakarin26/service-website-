@@ -153,6 +153,25 @@ Demo / Testmodus: keine echten Angebote, keine Preise verbindlich.
 </div>
 </div>
 </article>
+  <!-- START: Random Meme Generator (Demo) -->
+<div class="meme-generator" aria-live="polite">
+  <p class="muted small">Da wir aktuell keine Dienstleistungen anbieten — haben Sie Spaß mit unserem Random-Meme-Generator!</p>
+
+  <div class="meme-controls">
+    <label for="meme-number" class="small muted">Zahl (0–100, optional):</label>
+    <input id="meme-number" type="number" min="0" max="100" placeholder="Zahl eingeben (z. B. 67)">
+    <button id="meme-gen-btn" class="btn primary">Generieren</button>
+  </div>
+
+  <!-- Egg + animation container -->
+  <div id="egg-area" class="egg-area" aria-hidden="true">
+    <div class="egg" id="meme-egg" aria-hidden="true"></div>
+  </div>
+
+  <!-- Ergebnis -->
+  <div id="meme-result" class="meme-result" aria-live="polite"></div>
+</div>
+<!-- END: Random Meme Generator (Demo) -->
 
 <p class="muted small">Alle dargestellten Preise sind fiktiv und dienen nur zu Demonstrationszwecken.</p>
 </section>
