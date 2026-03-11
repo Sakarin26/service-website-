@@ -201,11 +201,10 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.setAttribute('aria-expanded', 'true');
     }
   });
+/* ===== Robust Random Meme Generator (füge ans Ende von script.js) ===== */
+document.addEventListener('DOMContentLoaded', function () {
 
-});
-/* ===== Random Meme Generator (Demo) ===== */
-(function(){
-  // sichere Meme-Liste (nur harmlose, spaßige Begriffe + emojis)
+  // sichere Meme-Liste (harmlos)
   const MEMES = [
     { key: '67', title: '67 — Die Glückszahl', body: 'Ein sehr zufälliges Meme: 67 🎉\nImmer ein Grund zu lächeln.' , sticker: '🔢' },
     { key: 'skibidi', title: 'Skibidi', body: 'Skibidi-Vibes! Mach die Tanzbewegung (nur in Gedanken) 😄', sticker: '🕺' },
@@ -214,59 +213,56 @@ document.addEventListener('DOMContentLoaded', function () {
     { key: 'boop', title: 'Boop!', body: 'Boop the snoot — niedlich und harmlos. 🫧', sticker: '🫧' },
     { key: 'banana', title: 'Banana Time', body: 'Bananen sind glücklich. 🍌', sticker: '🍌' },
     { key: 'tiny-dog', title: 'Tiny Dog Energy', body: 'Kleiner Hund, große Persönlichkeit. 🐶', sticker: '🐶' },
-    { key: 'math-67', title: '67 mal Spaß', body: 'Rechne 67 * guter Laune = Lächeln 😄', sticker: '✖️' },
-    { key: 'mirror', title: 'Morning Mirror', body: 'Schau in den Spiegel — du siehst fantastisch aus! ✨', sticker: '🪞' },
     { key: 'noice', title: 'Noice', body: 'Wenn alles richtig gut läuft — Noice. 👍', sticker: '👌' },
-    { key: 'sketch', title: 'Random Sketch', body: 'Ein abstraktes Kunstwerk in deinem Kopf. 🎨', sticker: '🖌️' },
-    { key: 'tiny-planet', title: 'Tiny Planet', body: 'Reise in Gedanken zu einem Mini-Planeten 🌍', sticker: '🌍' },
-    { key: 'cat-mood', title: 'Cat Mood', body: 'Kaffee + Katze = perfekter Start. ☕🐈', sticker: '☕' },
     { key: 'hello', title: 'Einfach Hallo', body: 'Hallo! Dies ist ein freundliches Demo-Meme. 😊', sticker: '👋' },
     { key: 'robot', title: 'Friendly Bot', body: 'Ich bin ein netter Bot. Beep boop 🤖', sticker: '🤖' }
   ];
 
-  // DOM
+  // DOM-Elemente
   const btn = document.getElementById('meme-gen-btn');
   const input = document.getElementById('meme-number');
   const egg = document.getElementById('meme-egg');
   const eggArea = document.getElementById('egg-area');
   const result = document.getElementById('meme-result');
 
-  if (!btn || !egg || !eggArea || !result) return;
+  // Debug: prüfe, ob alle Elemente existieren
+  if (!btn) { console.error('Meme: Button #meme-gen-btn fehlt'); return; }
+  if (!input) { console.error('Meme: Input #meme-number fehlt'); return; }
+  if (!egg) { console.error('Meme: Egg #meme-egg fehlt'); return; }
+  if (!eggArea) { console.error('Meme: Egg area #egg-area fehlt'); return; }
+  if (!result) { console.error('Meme: Result #meme-result fehlt'); return; }
 
-  // helper: random int
-  function randInt(max) { return Math.floor(Math.random() * max); }
+  // Hilfsfunktion
+  const randInt = (max) => Math.floor(Math.random() * max);
 
-  // create fragments for explosion
-  function createFragments(centerX, centerY, count = 10) {
-    const frags = [];
+  // Fragmente erzeugen
+  function createFragments(centerX, centerY, count = 12) {
+    const rect = eggArea.getBoundingClientRect();
+    const created = [];
     for (let i = 0; i < count; i++) {
       const f = document.createElement('div');
       f.className = 'fragment';
-      // random direction
-      const angle = (Math.PI * 2) * Math.random();
-      const dist = 60 + Math.random() * 80;
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 40 + Math.random() * 90;
       const tx = Math.round(Math.cos(angle) * dist) + 'px';
       const ty = Math.round(Math.sin(angle) * dist) + 'px';
       const rot = (Math.random() * 360).toFixed(0) + 'deg';
-      // CSS custom props used by keyframe final transform
       f.style.setProperty('--tx', tx);
       f.style.setProperty('--ty', ty);
       f.style.setProperty('--rot', rot);
-      // start position: center of egg area (we add relative offsets)
-      // position relative to eggArea
-      const rect = eggArea.getBoundingClientRect();
-      const x = centerX - rect.left - 8; // adjust half fragment size
+      // Position relativ zum eggArea
+      const x = centerX - rect.left - 8;
       const y = centerY - rect.top - 8;
-      f.style.left = x + 'px';
-      f.style.top = y + 'px';
+      f.style.left = (x) + 'px';
+      f.style.top = (y) + 'px';
       eggArea.appendChild(f);
-      frags.push(f);
+      created.push(f);
     }
-    // remove after animation
-    setTimeout(() => frags.forEach(el => el.remove()), 1200);
+    // Aufräumen
+    setTimeout(() => created.forEach(el => el.remove()), 1400);
   }
 
-  // show meme card
+  // Meme Karte anzeigen
   function showMemeCard(obj) {
     result.innerHTML = '';
     const card = document.createElement('div');
@@ -282,55 +278,53 @@ document.addEventListener('DOMContentLoaded', function () {
     result.appendChild(card);
   }
 
-  // main action
+  // Klick-Handler
   btn.addEventListener('click', function () {
-    // visual: button "eier" (shake)
+    // disable kurz
     btn.disabled = true;
     btn.style.transform = 'scale(0.98)';
 
-    // read number
+    // number lesen (falls leer: random 0-100)
     let num = parseInt(input.value, 10);
-    if (isNaN(num)) num = Math.floor(Math.random() * 101);
+    if (Number.isNaN(num)) num = Math.floor(Math.random() * 101);
 
-    // egg bounce
+    // Egg bounce
     egg.classList.remove('exploded');
-    void egg.offsetWidth; // reflow
+    void egg.offsetWidth; // reflow damit Animation wieder startet
     egg.classList.add('bounce');
 
-    // after short delay, egg explodes
+    // nach Delay explodiert das Ei
     setTimeout(() => {
-      // compute center of egg for fragments
       const rect = egg.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
-      // create fragments and fade egg
-      createFragments(centerX, centerY, 12);
+      // Fragmente erzeugen & Ei weg animieren
+      createFragments(centerX, centerY, 14);
       egg.classList.add('exploded');
 
-      // pick meme: use provided number as seed: index = num % MEMES.length
+      // Meme auswählen: امن index = (num mod MEMES.length)
       const idx = Math.abs(num) % MEMES.length;
       const chosen = MEMES[idx];
 
-      // small delay to reveal meme card after explosion
+      // kleine Verzögerung um Effekt zu zeigen
       setTimeout(() => {
         showMemeCard(chosen);
-        // re-enable button
         btn.disabled = false;
         btn.style.transform = '';
       }, 420);
 
-      // cleanup bounce class
+      // Entferne bounce class später
       setTimeout(() => egg.classList.remove('bounce'), 900);
-    }, 580);
+    }, 560);
   });
 
-  // Accessibility: Enter on input triggers generate
-  input && input.addEventListener('keydown', (ev) => {
+  // Enter im Input soll auch generieren
+  input.addEventListener('keydown', (ev) => {
     if (ev.key === 'Enter') {
       ev.preventDefault();
       btn.click();
     }
   });
 
-})();
+});
